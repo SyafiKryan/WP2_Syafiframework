@@ -29,6 +29,26 @@ class User extends CI_Controller
         $this->load->view('user/anggota', $data);
         $this->load->view('templates/footer');
     }
+    public function kategori()
+    {
+        $data['judul'] = 'Kategori Buku';
+        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array();
+        $this->db->where('role_id', 1);
+        $data['kategori'] = $this->db->get('kategori')->result_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('buku/kategori', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function hapusKategori()
+    {
+        $where = ['id' => $this->uri->segment(3)];
+        $this->ModelBuku->hapusKategori($where);
+        redirect('buku/kategori');
+    }
+
     public function ubahProfil()
     {
         $data['judul'] = 'Ubah Profil';
